@@ -33,18 +33,21 @@ mongoose.connect(mongoURI).then(() => {
 });
 
 
-
 //Public
 app.use(express.static(path.join(__dirname, "public")));
-
-
-
-
 
 
 //Rotas
 app.get("/", (req, res) => {
     res.json({'titulo': 'Testando a integração entre o react e o node'});
+});
+
+app.post("/posts", (req, res) => {
+    if(req.body.message){
+        res.json({'titulo': 'foi'});
+    }else{
+        res.json({'titulo': 'não foi'});
+    };
 });
 
 
