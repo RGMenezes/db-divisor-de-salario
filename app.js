@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const session = require('express-session');
 const passport = require("passport");
@@ -15,6 +16,8 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+app.use(express.json());
+app.use(cors())
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -30,6 +33,19 @@ mongoose.connect(mongoURI).then(() => {
 });
 
 
+
+//Public
+app.use(express.static(path.join(__dirname, "public")));
+
+
+
+
+
+
+//Rotas
+app.get("/", (req, res) => {
+    res.json({'titulo': 'Testando a integração entre o react e o node'});
+});
 
 
 
