@@ -16,4 +16,4 @@ const User = new Schema({
     }
 });
 
-mongoose.model("Users", User);
+mongoose.model("users", User);
