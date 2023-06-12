@@ -42,14 +42,13 @@ app.get("/", (req, res) => {
     res.json({'titulo': 'Testando a integração entre o react e o node'});
 });
 
-app.post("/posts", (req, res) => {
-    if(req.body.message){
-        res.json({'titulo': 'foi'});
-    }else{
-        res.json({'titulo': 'não foi'});
-    };
+app.post("/login", (req, res) => {
+
 });
 
+app.post("/register", (req, res) => {
+    
+});
 
 
 const PORT = listenPort || 8081;
