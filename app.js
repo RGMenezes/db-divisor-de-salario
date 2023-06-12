@@ -42,8 +42,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 //Rotas
-app.get("/", (req, res) => {
-    res.json({'titulo': 'Testando a integração entre o react e o node'});
+let alertMessage;
+app.get("/alert", (req, res) => {
+    res.json(alertMessage);
+    alertMessage = "";
+});
+app.post("/alert", (req, res) => {
+    alertMessage = req.body.message;
 });
 
 app.post("/login", (req, res) => {
@@ -54,21 +59,23 @@ app.post("/register", (req, res) => {
     User.findOne({userName: req.body.user.userName}).then((user) => {
         if(user){
             res.json({
-                err: true, 
+                type: "error", 
                 value: {
                     error: "Usuário existente", 
                     message: "Nome de usuário já cadastrado!"
-                }
+                },
+                redirect: "/register"
             });
         }else{
             User.findOne({email: req.body.user.email}).then((email) => {
                 if(email){
                     res.json({
-                        err: true, 
+                        type: "error", 
                         value: {
                             error: "Email existente", 
                             message: "Email já cadastrado!"
-                        }
+                        },
+                        redirect: "/register"
                     });
                 }else{
                     const newUser = new User({
@@ -81,11 +88,12 @@ app.post("/register", (req, res) => {
                         bcrypt.hash(newUser.password, salt, (error, hash) => {
                             if(error){
                                 res.json({
-                                    err: true, 
+                                    type: "error",
                                     value: {
                                         error: error, 
                                         message: "Erro ao cadastrar usuário!"
-                                    }
+                                    },
+                                    redirect: "/"
                                 });
                             };
 
@@ -93,19 +101,21 @@ app.post("/register", (req, res) => {
 
                             newUser.save().then(() => {
                                 res.json({
-                                    err: false, 
+                                    type: "success", 
                                     value: {
-                                        error: "success", 
+                                        error: "Não houve erros", 
                                         message: "Usuário cadastrado com sucesso!"
-                                    }
+                                    },
+                                    redirect: "/"
                                 });
                             }).catch((err) => {
                                 res.json({
-                                    err: true, 
+                                    type: "error", 
                                     value: {
-                                        error: error, 
+                                        error: err, 
                                         message: "Erro ao cadastrar usuário!"
-                                    }
+                                    },
+                                    redirect: "/"
                                 });
                             });
 
@@ -114,21 +124,23 @@ app.post("/register", (req, res) => {
                 }
             }).catch((err) => {
                 res.json({
-                    err: true, 
+                    type: "error", 
                     value: {
                         error: err, 
                         message: "Houve um erro ao buscar os emails dos usuários!"
-                    }
+                    },
+                    redirect: "/"
                 });
             });
         }
     }).catch((err) => {
         res.json({
-            err: true, 
+            type: "error", 
             value: {
                 error: err, 
                 message: "Houve um erro ao buscar os nomes de usuários!"
-            }
+            },
+            redirect: "/"
         });
     });
 });
