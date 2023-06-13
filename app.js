@@ -77,7 +77,7 @@ app.get("/login/failure", (req, res) => {
             error: "Login invalido", 
             message: "Não foi possível fazer o login! Confira o email e a senha."
         },
-        redirect: "/",
+        redirect: "/"
     });
 });
 
