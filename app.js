@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const session = require('express-session');
 const passport = require("passport");
+require("./config/auth")(passport);
 const bcrypt = require("bcryptjs");
 
 const sessionSecret = require("./sessionSecret.js");
@@ -51,8 +52,33 @@ app.post("/alert", (req, res) => {
     alertMessage = req.body.message;
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", (req, res, next) => {
+    passport.authenticate("local",{
+        successRedirect: "/login/success",
+        failureRedirect: "/login/failure"
+    })(req, res, next);
+});
 
+app.get("/login/success", (req, res) => {
+    res.json({
+        type: "success", 
+        value: {
+            error: "Não hove erros", 
+            message: "Bem-vindo ao Divisor de Salário."
+        },
+        redirect: "/home"
+    });
+});
+
+app.get("/login/failure", (req, res) => {
+    res.json({
+        type: "error", 
+        value: {
+            error: "Login invalido", 
+            message: "Não foi possível fazer o login! Confira o email e a senha."
+        },
+        redirect: "/",
+    });
 });
 
 app.post("/register", (req, res) => {
