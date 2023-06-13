@@ -72,6 +72,23 @@ app.get("/login/failure", (req, res) => {
     });
 });
 
+app.get("/logout", (req, res, next) => {
+    req.logout((err) => {
+        if(err){
+            next(err);
+        }else{
+            res.json({
+                type: "", 
+                value: {
+                    error: "Não houve erros", 
+                    message: "Logout realizado com sucesso, obrigado por nos visitar!"
+                },
+                redirect: "/"
+            });
+        };
+    });
+});
+
 app.post("/register", (req, res) => {
     User.findOne({userName: req.body.user.userName}).then((user) => {
         if(user){
