@@ -43,15 +43,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 //Rotas
-let alertMessage;
-app.get("/alert", (req, res) => {
-    res.json(alertMessage);
-    alertMessage = "";
-});
-app.post("/alert", (req, res) => {
-    alertMessage = req.body.message;
-});
-
 app.post("/login", (req, res, next) => {
     passport.authenticate("local",{
         successRedirect: "/login/success",
