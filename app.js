@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 const path = require("path");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -21,11 +22,14 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
-app.use(express.json());
+
 app.use(cors());
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 
 //mongoose
@@ -177,6 +181,10 @@ app.post("/register", (req, res) => {
             redirect: "/"
         });
     });
+});
+
+app.get("/find/user", (req, res) => {
+    //Procurar e mandar o usuario com base no email
 });
 
 
