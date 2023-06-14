@@ -15,6 +15,8 @@ const {mongoURI, listenPort} = require("./db.js");
 require("./models/User.js");
 const User = mongoose.model("users");
 
+let user = null;
+
 
 //sessions
 app.use(session({
@@ -52,6 +54,7 @@ app.post("/login", (req, res, next) => {
         successRedirect: "/login/success",
         failureRedirect: "/login/failure"
     })(req, res, next);
+    user = req.body.email;
 });
 
 app.get("/login/success", (req, res) => {
@@ -74,6 +77,7 @@ app.get("/login/failure", (req, res) => {
         },
         redirect: "/"
     });
+    user = null;
 });
 
 app.get("/logout", (req, res, next) => {
@@ -89,6 +93,7 @@ app.get("/logout", (req, res, next) => {
                 },
                 redirect: "/"
             });
+            user = null;
         };
     });
 });
@@ -184,7 +189,35 @@ app.post("/register", (req, res) => {
 });
 
 app.get("/find/user", (req, res) => {
-    //Procurar e mandar o usuario com base no email
+    User.findOne({email: user}).then((user) => {
+        if(user){
+            res.json({
+                type: "success", 
+                value: {
+                    email: user.email, 
+                    userName: user.userName
+                }
+            });
+        }else{
+            res.json({
+                type: "error", 
+                value: {
+                    error: "Usuário não foi logado", 
+                    message: "Você precisa estar logado para acessar esta rota!"
+                },
+                redirect: "/"
+            });
+        };
+    }).catch((err) => {
+        res.json({
+            type: "error", 
+            value: {
+                error: "Usuário não encontrado", 
+                message: "Houve em erro ao procurar o seu login, tente novamente!"
+            },
+            redirect: "/"
+        });
+    });
 });
 
 
