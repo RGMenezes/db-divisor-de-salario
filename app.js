@@ -195,7 +195,9 @@ app.get("/find/user", (req, res) => {
                 type: "success", 
                 value: {
                     email: user.email, 
-                    userName: user.userName
+                    userName: user.userName,
+                    _id: user._id,
+                    division: user.division
                 }
             });
         }else{
@@ -216,6 +218,28 @@ app.get("/find/user", (req, res) => {
                 message: "Houve em erro ao procurar o seu login, tente novamente!"
             },
             redirect: "/"
+        });
+    });
+});
+
+app.post("/user", (req, res) => {
+    User.deleteOne({_id: req.body._id}).then(() => {
+        res.json({
+            type: "success", 
+            value: {
+                error: "Não hove erros", 
+                message: "Usuário deletado com sucesso!"
+            },
+            redirect: "/"
+        });
+    }).catch((err) => {
+        res.json({
+            type: "error", 
+            value: {
+                error: "Usuário não foi deletado", 
+                message: "Não foi possível deletar este usuário, tente novamente!"
+            },
+            redirect: "/home"
         });
     });
 });

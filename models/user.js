@@ -13,6 +13,10 @@ const User = new Schema({
     password: {
         type: String,
         require: true
+    },
+    division: {
+        type: Array,
+        default: []
     }
 });
 
