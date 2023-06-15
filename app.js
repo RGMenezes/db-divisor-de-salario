@@ -244,6 +244,10 @@ app.post("/user", (req, res) => {
     });
 });
 
+app.put("/new/division", (req, res) => {
+    
+});
+
 
 const PORT = listenPort || 8081;
 
