@@ -11,6 +11,7 @@ const bcrypt = require("bcryptjs");
 
 const sessionSecret = require("./sessionSecret.js");
 const {mongoURI, listenPort} = require("./db.js");
+const { error } = require("console");
 
 require("./models/User.js");
 const User = mongoose.model("users");
@@ -245,7 +246,62 @@ app.post("/user", (req, res) => {
 });
 
 app.put("/new/division", (req, res) => {
-    
+    User.findOne({email: user}).then((user) => {
+        if(user.division.find(el => el.name == req.body.name)){
+            res.json({
+                type: "error", 
+                value: {
+                    error: "Nome de divisão existente", 
+                    message: "Uma divisão já possui este nome."
+                },
+                redirect: "/home"
+            });
+        }else{
+            User.findOne({_id: user._id}).then((userFind) => {
+
+                userFind.division.push(req.body);
+
+                userFind.save().then(() => {
+                    user.division.push(req.body);
+                    res.json({
+                        type: "success", 
+                        value: {
+                            error: "Não houve erro", 
+                            message: "Divisão criada com sucesso."
+                        },
+                        redirect: "/divisions"
+                    });
+                }).catch((err) => {
+                    res.json({
+                        type: "error", 
+                        value: {
+                            error: err, 
+                            message: "Não foi possível salvar a divisão."
+                        },
+                        redirect: "/home"
+                    });
+                });
+            }).catch((err) => {
+                res.json({
+                    type: "error", 
+                    value: {
+                        error: err, 
+                        message: "Não foi possível encontrar o usuário para salvar a divisão."
+                    },
+                    redirect: "/home"
+                });
+            });
+        };
+    }).catch((err) => {
+        res.json({
+            type: "error", 
+            value: {
+                error: err, 
+                message: "Não foi possível encontrar o usuário."
+            },
+            redirect: "/home"
+        });
+    });
 });
 
 
