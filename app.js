@@ -253,8 +253,7 @@ app.put("/new/division", (req, res) => {
                 value: {
                     error: "Nome de divisão existente", 
                     message: "Uma divisão já possui este nome."
-                },
-                redirect: "/home"
+                }
             });
         }else{
             User.findOne({_id: user._id}).then((userFind) => {
