@@ -307,31 +307,33 @@ app.put("/delete/division", (req, res) => {
     User.findOne({email: user}).then((user) => {
         if(user.division.find(el => el.name == req.body.name)){
             User.findOne({_id: user._id}).then((userFind) => {
+                const indexDivision = userFind.division.findIndex((element, index) => {
+                    if(element.name == req.body.name){
+                        return index
+                    };
+                });
+                userFind.division.splice(indexDivision, 1);
 
-                console.log(userFind.division)
-                userFind.division.shift(userFind.division.indexOf(userFind.division.filter(el => el.name == body.name)));
-                console.log(userFind.division)
-
-                // userFind.save().then(() => {
-                //     user.division.push(req.body);
-                //     res.json({
-                //         type: "success", 
-                //         value: {
-                //             error: "Não houve erro", 
-                //             message: "Divisão deletada com sucesso."
-                //         },
-                //         redirect: "/divisions"
-                //     });
-                // }).catch((err) => {
-                //     res.json({
-                //         type: "error", 
-                //         value: {
-                //             error: err, 
-                //             message: "Não foi possível deletar a divisão."
-                //         },
-                //         redirect: "/home"
-                //     });
-                // });
+                userFind.save().then(() => {
+                    user.division.splice(indexDivision, 1);
+                    res.json({
+                        type: "success", 
+                        value: {
+                            error: "Não houve erro", 
+                            message: "Divisão deletada com sucesso."
+                        },
+                        redirect: "/divisions"
+                    });
+                }).catch((err) => {
+                    res.json({
+                        type: "error", 
+                        value: {
+                            error: err, 
+                            message: "Não foi possível deletar a divisão."
+                        },
+                        redirect: "/divisions"
+                    });
+                });
             }).catch((err) => {
                 res.json({
                     type: "error", 
@@ -339,7 +341,7 @@ app.put("/delete/division", (req, res) => {
                         error: err, 
                         message: "Não foi possível encontrar o usuário para deletar a divisão."
                     },
-                    redirect: "/home"
+                    redirect: "/divisions"
                 });
             });
         }else{
@@ -349,7 +351,7 @@ app.put("/delete/division", (req, res) => {
                     error: "Nome de divisão não existente", 
                     message: "Não foi possível encontrar esta divisão."
                 },
-                redirect: "/home"
+                redirect: "/divisions"
             });
         };
     }).catch((err) => {
@@ -359,7 +361,7 @@ app.put("/delete/division", (req, res) => {
                 error: err, 
                 message: "Não foi possível encontrar o usuário."
             },
-            redirect: "/home"
+            redirect: "/divisions"
         });
     });
 });
