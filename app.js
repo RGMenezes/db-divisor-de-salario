@@ -303,6 +303,67 @@ app.put("/new/division", (req, res) => {
     });
 });
 
+app.put("/delete/division", (req, res) => {
+    User.findOne({email: user}).then((user) => {
+        if(user.division.find(el => el.name == req.body.name)){
+            User.findOne({_id: user._id}).then((userFind) => {
+
+                console.log(userFind.division)
+                userFind.division.shift(userFind.division.indexOf(userFind.division.filter(el => el.name == body.name)));
+                console.log(userFind.division)
+
+                // userFind.save().then(() => {
+                //     user.division.push(req.body);
+                //     res.json({
+                //         type: "success", 
+                //         value: {
+                //             error: "Não houve erro", 
+                //             message: "Divisão deletada com sucesso."
+                //         },
+                //         redirect: "/divisions"
+                //     });
+                // }).catch((err) => {
+                //     res.json({
+                //         type: "error", 
+                //         value: {
+                //             error: err, 
+                //             message: "Não foi possível deletar a divisão."
+                //         },
+                //         redirect: "/home"
+                //     });
+                // });
+            }).catch((err) => {
+                res.json({
+                    type: "error", 
+                    value: {
+                        error: err, 
+                        message: "Não foi possível encontrar o usuário para deletar a divisão."
+                    },
+                    redirect: "/home"
+                });
+            });
+        }else{
+            res.json({
+                type: "error", 
+                value: {
+                    error: "Nome de divisão não existente", 
+                    message: "Não foi possível encontrar esta divisão."
+                },
+                redirect: "/home"
+            });
+        };
+    }).catch((err) => {
+        res.json({
+            type: "error", 
+            value: {
+                error: err, 
+                message: "Não foi possível encontrar o usuário."
+            },
+            redirect: "/home"
+        });
+    });
+});
+
 
 const PORT = listenPort || 8081;
 
