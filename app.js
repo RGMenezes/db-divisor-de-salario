@@ -12,8 +12,7 @@ const bcrypt = require("bcryptjs");
 const sessionSecret = require("./sessionSecret.js");
 const {mongoURI} = require("./db.js");
 
-const usersSchema = require("./models/User.js");
-const User = mongoose.model("users", usersSchema);
+const User = mongoose.model("users", require("userSchema"));
 
 let user = null;
 
