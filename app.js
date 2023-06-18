@@ -10,8 +10,7 @@ require("./config/auth")(passport);
 const bcrypt = require("bcryptjs");
 
 const sessionSecret = require("./sessionSecret.js");
-const {mongoURI, listenPort} = require("./db.js");
-const { error } = require("console");
+const {mongoURI} = require("./db.js");
 
 require("./models/User.js");
 const User = mongoose.model("users");
@@ -367,6 +366,6 @@ app.put("/delete/division", (req, res) => {
 });
 
 
-const PORT = listenPort || 8081;
+const PORT = process.env.PORT || 8081;
 
 app.listen(PORT, () => console.log("Servidor rodando"));
