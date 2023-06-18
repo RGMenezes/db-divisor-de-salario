@@ -20,7 +20,7 @@ let user = null;
 
 //sessions
 app.use(session({
-    secret: sessionSecret,
+    secret: process.env.SESSION || sessionSecret,
     resave: true,
     saveUninitialized: true
 }));
@@ -36,7 +36,7 @@ app.use(bodyParser.json());
 
 //mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect(mongoURI).then(() => {
+mongoose.connect(process.env.DATABASE_URL || mongoURI).then(() => {
     console.log("conectado ao mongo...");
 }).catch((err) => {
     console.log("Erro ao se conectar ao mongo...");
