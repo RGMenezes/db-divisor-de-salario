@@ -50,7 +50,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //Rotas
 app.get("/", (req, res) => {
-    res.json("Página principal");
 });
 
 app.post("/login", (req, res, next) => {
