@@ -50,6 +50,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //Rotas
 app.get("/", (req, res) => {
+    res.json("Home");
 });
 
 app.post("/login", (req, res, next) => {
@@ -369,6 +370,6 @@ app.put("/delete/division", (req, res) => {
 });
 
 
-const PORT = process.env.PORT || 8081;
+const PORT = 8081;
 
 app.listen(PORT, () => console.log("Servidor rodando"));
