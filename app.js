@@ -9,8 +9,6 @@ const passport = require("passport");
 require("./config/auth")(passport);
 const bcrypt = require("bcryptjs");
 
-const {mongoURI} = require("./db.js");
-
 require("./model/User");
 const User = mongoose.model("users");
 
@@ -35,7 +33,7 @@ app.use(bodyParser.json());
 
 //mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DATABASE_URL || mongoURI).then(() => {
+mongoose.connect(process.env.DATABASE_URL).then(() => {
     console.log("conectado ao mongo...");
 }).catch((err) => {
     console.log("Erro ao se conectar ao mongo...");
