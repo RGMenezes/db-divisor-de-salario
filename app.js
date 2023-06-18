@@ -20,7 +20,7 @@ let user = null;
 
 //sessions
 app.use(session({
-    secret: process.env.SESSION || sessionSecret,
+    secret: process.env.SESSION,
     resave: true,
     saveUninitialized: true
 }));
