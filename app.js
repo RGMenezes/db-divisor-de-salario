@@ -9,7 +9,6 @@ const passport = require("passport");
 require("./config/auth")(passport);
 const bcrypt = require("bcryptjs");
 
-const sessionSecret = require("./sessionSecret.js");
 const {mongoURI} = require("./db.js");
 
 require("./model/User");
