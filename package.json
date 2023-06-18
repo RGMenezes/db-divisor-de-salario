@@ -1,10 +1,4 @@
 {
-  "engines": {
-    "node": "14.x"
-  },
-  "scripts": {
-    "start": "node app.js"
-  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
