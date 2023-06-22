@@ -32,4 +32,4 @@ Se você deseja contribuir para o desenvolvimento do Divisor de Salário, sinta-
 ### Contato
 Em caso de dúvidas ou sugestões, entre em contato comigo pelo email [faelgmp@gmail.com].
 
-##### Visite o site [divisordesalario.netlify.app](divisordesalario.netlify.app).
+##### Visite o site [divisordesalario.netlify.app].
